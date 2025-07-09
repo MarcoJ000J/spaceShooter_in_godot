@@ -15,16 +15,15 @@ func _ready() -> void:
 	$AnimatedSprite2D.play()
 	
 	screen_size = get_viewport_rect().size
-	pass
 
 
 func _process(delta: float) -> void:
-	move(delta, screen_size)
+	move(delta)
 	
 	pass
 
 
-func move(delta, screen_size):
+func move(delta):
 	#later change to state machine
 	var input_vector = Vector2.ZERO
 	
