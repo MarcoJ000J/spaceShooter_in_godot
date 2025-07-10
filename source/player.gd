@@ -10,6 +10,8 @@ signal hit
 
 var screen_size
 
+@export var bullet: PackedScene
+
 func _ready() -> void:
 	$AnimatedSprite2D.rotation_degrees = 90
 	$AnimatedSprite2D.play()
@@ -72,15 +74,25 @@ func move(delta):
 		velocity.y = 0
 	
 	position = position.clamp(Vector2.ZERO, screen_size)
+	
+	########################################################################
+	#shoting
+	if Input.is_action_just_pressed("shoot"):
+		var new_bullet = bullet.instantiate()
+		add_sibling(new_bullet)
+		new_bullet.position = self.position
 
 
 func _on_body_entered(body: Node2D) -> void:
-	hit.emit()
-	
-	#temporary
-	hide()
-	#why?
-	$CollisionShape2D.set_deferred("disabled", true)
+	#need to actualy aply this
+	if body.is_in_group("bulett") or body.is_in_group("enemy"):
+		hit.emit()
+		#temporary
+		hide()
+		#why?
+		$CollisionShape2D.set_deferred("disabled", true)
+		
+		queue_free()
 
 func start(pos):
 	position = pos
