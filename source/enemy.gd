@@ -30,20 +30,23 @@ func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 	$shoot_Timer.start()
 
 
-func _on_body_entered(body: Node2D) -> void:
-	#temporary
-	hide()
-	#why?
-	$CollisionShape2D.set_deferred("disabled", true)
-	
-	queue_free()
-
-
 func _on_shoot_timer_timeout() -> void:
 	if inside == true:
 		var new_bullet = bullet.instantiate()
-		new_bullet.setup("enemy")
+		new_bullet.setup("enemy", self)
 		add_sibling(new_bullet)
 		new_bullet.position = self.position
+		new_bullet.add_to_group("bullet_enemy")
+
 	
 	$shoot_Timer.wait_time = randf_range(0.1, 1)
+
+
+func _on_area_entered(area: Area2D) -> void:
+	if area.is_in_group("bullet_player"):
+		#temporary
+		hide()
+		#why?
+		$CollisionShape2D.set_deferred("disabled", true)
+		
+		queue_free()

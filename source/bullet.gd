@@ -1,12 +1,13 @@
 extends Area2D
 
-const speed = 1000.0
+var speed = 1000.0
 var right = false
 
 signal bullet_hit
 
 var screen_border
 
+var who_shoot : Node = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -36,18 +37,27 @@ func _process(delta: float) -> void:
 	pass
 
 
-func _on_body_entered(body: Node2D) -> void:
-	bullet_hit.emit()
-	$CollisionShape2D.disabled = true
+func setup(group: String, who_is_shooting : Node):
 	
-	$AnimatedSprite2D.play("explode")
-	#need to fix this
-	await 6
-	queue_free()
-	
-
-func setup(group: String):
 	if group == "player":
 		right = false 
 	elif group == "enemy":
 		right = true
+	
+	who_shoot = who_is_shooting
+
+
+func _on_area_entered(area: Area2D):
+	if area == who_shoot:
+		print("pqp")
+		return
+	else:
+		bullet_hit.emit()
+		$CollisionShape2D.disabled = true
+		
+		speed = 0
+		
+		$AnimatedSprite2D.play("explode")
+		await $AnimatedSprite2D.animation_finished
+		queue_free()
+		

@@ -12,6 +12,7 @@ var screen_size
 
 @export var bullet: PackedScene
 
+
 func _ready() -> void:
 	$AnimatedSprite2D.rotation_degrees = 90
 	$AnimatedSprite2D.play()
@@ -79,14 +80,28 @@ func move(delta):
 	#shoting
 	if Input.is_action_just_pressed("shoot"):
 		var new_bullet = bullet.instantiate()
-		new_bullet.setup("player")
+		new_bullet.setup("player", self)
 		add_sibling(new_bullet)
+		
+		
+		
 		new_bullet.position = self.position
+		new_bullet.add_to_group("bullet_player")
 
 
-func _on_body_entered(body: Node2D) -> void:
+func start(pos):
+	position = pos
+	show()
+	
+	$CollisionShape2D.disabled = false
+
+
+
+
+func _on_area_entered(area: Area2D) -> void:
+	
 	#need to actualy aply this
-	if body.is_in_group("bullet") or body.is_in_group("enemy"):
+	if area.is_in_group("bullet_enemy") or area.is_in_group("enemy"):
 		hit.emit()
 		#temporary
 		hide()
@@ -94,9 +109,4 @@ func _on_body_entered(body: Node2D) -> void:
 		$CollisionShape2D.set_deferred("disabled", true)
 		
 		queue_free()
-
-func start(pos):
-	position = pos
-	show()
-	
-	$CollisionShape2D.disabled = false
+	else: return
