@@ -79,13 +79,14 @@ func move(delta):
 	#shoting
 	if Input.is_action_just_pressed("shoot"):
 		var new_bullet = bullet.instantiate()
+		new_bullet.setup("player")
 		add_sibling(new_bullet)
 		new_bullet.position = self.position
 
 
 func _on_body_entered(body: Node2D) -> void:
 	#need to actualy aply this
-	if body.is_in_group("bulett") or body.is_in_group("enemy"):
+	if body.is_in_group("bullet") or body.is_in_group("enemy"):
 		hit.emit()
 		#temporary
 		hide()

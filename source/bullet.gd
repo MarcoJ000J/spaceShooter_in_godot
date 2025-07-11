@@ -1,16 +1,18 @@
 extends Area2D
 
 const speed = 1000.0
+var right = false
 
 signal bullet_hit
 
 var screen_border
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$AnimatedSprite2D.rotation_degrees = 90
-	$AnimatedSprite2D.play("move")
-	
+	$AnimatedSprite2D.play("move3")
+	 
 	screen_border = get_viewport_rect().size
 
 
@@ -18,7 +20,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var velocity = Vector2.ZERO
 	
-	velocity.x = 1
+	if right == false:
+		velocity.x = 1
+	elif right == true:
+		velocity.x = -1
 	
 	position += velocity * speed * delta
 	
@@ -33,8 +38,16 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	bullet_hit.emit()
+	$CollisionShape2D.disabled = true
 	
 	$AnimatedSprite2D.play("explode")
 	#need to fix this
 	await 6
 	queue_free()
+	
+
+func setup(group: String):
+	if group == "player":
+		right = false 
+	elif group == "enemy":
+		right = true

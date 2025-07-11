@@ -1,7 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://d07qd1opiyq0c"]
+[gd_scene load_steps=20 format=3 uid="uid://d07qd1opiyq0c"]
 
 [ext_resource type="Script" uid="uid://5l0dj14vawcq" path="res://source/bullet.gd" id="1_j45y7"]
 [ext_resource type="Texture2D" uid="uid://c7kxf4xhlg6tx" path="res://resource/sprites/Illustration9 (6).png" id="1_yssyt"]
+[ext_resource type="Texture2D" uid="uid://bmdk8b4si7x2m" path="res://resource/sprites/Lasers/laserGreen11.png" id="3_cdlut"]
+[ext_resource type="Texture2D" uid="uid://b8eo8kkuqu26p" path="res://resource/sprites/Lasers/laserRed09.png" id="3_x2mq5"]
+[ext_resource type="Texture2D" uid="uid://jco8w6iwgco6" path="res://resource/sprites/Lasers/laserRed08.png" id="4_jjtvw"]
+[ext_resource type="Texture2D" uid="uid://y14yn3qwwv5w" path="res://resource/sprites/Lasers/laserGreen03.png" id="4_xs4vm"]
+[ext_resource type="Texture2D" uid="uid://blqx8p6jtjpug" path="res://resource/sprites/Lasers/laserGreen13.png" id="5_r5ekq"]
+[ext_resource type="Texture2D" uid="uid://bcmffn4oead2l" path="res://resource/sprites/Lasers/laserRed10.png" id="5_t7rlc"]
+[ext_resource type="Texture2D" uid="uid://c0gbcc0jogeh4" path="res://resource/sprites/Lasers/laserGreen05.png" id="6_qitva"]
+[ext_resource type="Texture2D" uid="uid://7teihiwgf4l5" path="res://resource/sprites/Lasers/laserRed03.png" id="7_oqv6w"]
+[ext_resource type="Texture2D" uid="uid://bjbbnn1scqmtd" path="res://resource/sprites/Lasers/laserRed05.png" id="8_hnw6v"]
+[ext_resource type="Texture2D" uid="uid://bj2vfcdc275w1" path="res://resource/sprites/Lasers/laserRed13.png" id="9_1513y"]
+[ext_resource type="Texture2D" uid="uid://dk6c0j6ta4i0b" path="res://resource/sprites/Lasers/laserRed01.png" id="10_x2mq5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_87d1v"]
 atlas = ExtResource("1_yssyt")
@@ -34,6 +45,20 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("3_x2mq5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jjtvw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_t7rlc")
+}],
+"loop": true,
+"name": &"explode3",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_j45y7")
 }, {
 "duration": 1.0,
@@ -42,21 +67,59 @@ animations = [{
 "loop": true,
 "name": &"move",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_cdlut")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_xs4vm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_r5ekq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_qitva")
+}],
+"loop": true,
+"name": &"move2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_oqv6w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_hnw6v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_1513y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_x2mq5")
+}],
+"loop": true,
+"name": &"move3",
+"speed": 5.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tvedo"]
 radius = 4.0
 height = 44.0
 
-[node name="bullet(Node2D)" type="Area2D"]
+[node name="bullet(Node2D)" type="Area2D" groups=["bullet"]]
+z_index = -1
 script = ExtResource("1_j45y7")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = -1
 sprite_frames = SubResource("SpriteFrames_87d1v")
-animation = &"move"
+animation = &"explode3"
+frame_progress = 0.338385
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = -1
 position = Vector2(-1, 1)
 shape = SubResource("CapsuleShape2D_tvedo")
 

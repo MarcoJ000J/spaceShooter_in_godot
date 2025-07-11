@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://bk824j00rpuck"]
+
+[ext_resource type="Texture2D" uid="uid://c7kxf4xhlg6tx" path="res://resource/sprites/Illustration9 (6).png" id="1_7p1mj"]
+[ext_resource type="Script" uid="uid://ceit2y0713h6m" path="res://source/enemy.gd" id="1_md0e3"]
+[ext_resource type="PackedScene" uid="uid://d07qd1opiyq0c" path="res://scenes/util/bullet.tscn" id="2_4ra3w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_md0e3"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(419, 43, 93, 76)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ra3w"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(512, 43, 93, 76)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5uy6h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_md0e3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ra3w")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c4w8v"]
+radius = 34.2053
+
+[node name="Enemy" type="Area2D" groups=["enemy"]]
+position = Vector2(1228, 276)
+scale = Vector2(0.75, 0.75)
+script = ExtResource("1_md0e3")
+bullet = ExtResource("2_4ra3w")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_5uy6h")
+animation = &"move"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_c4w8v")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -1)
+
+[node name="shoot_Timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="timeout" from="shoot_Timer" to="." method="_on_shoot_timer_timeout"]
